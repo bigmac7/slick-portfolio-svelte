@@ -8,6 +8,7 @@
 	import { useTitle } from '$lib/utils/helpers';
 	import { isBlank } from '@riadh-adrani/utils';
 	import { getPlatfromIcon } from '$lib/utils';
+	import { animateTyping } from '$lib/utils/typing_animation';
 
 	const isEmail = (email: string): boolean => {
 		const reg =
@@ -26,7 +27,9 @@
 	<div class="md:flex-1 gap-10px">
 		<MainTitle classes="md:text-left ">{name} {lastName},</MainTitle>
 		<p class="text-[var(--tertiary-text)]  text-center md:text-left text-[1.2em] font-extralight">
-			{description}
+			<span use:animateTyping={description}>
+				{description}
+			</span>
 		</p>
 		<div class="row justify-center md:justify-start p-y-15px p-x-0px gap-2">
 			{#each links as link}

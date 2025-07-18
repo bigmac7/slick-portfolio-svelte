@@ -36,23 +36,20 @@ const defineSkill = <S extends string>(
 
 export const items = [
 	defineSkill({
-		slug: 'python ',
+		slug: 'python',
 		color: 'blue',
 		description: 'My first language',
 		logo: Assets.Python,
 		name: 'Python',
-		category: 'markup-style'
-	})
-] as const;
-
-export const skills = [
+		category: 'pro-lang'
+	}),
 	defineSkill({
 		slug: 'AWS',
 		color: 'orange',
 		description: 'Beautiful bunch of services',
 		logo: Assets.AWS,
 		name: 'AWS',
-		category: 'markup-style'
+		category: 'devops'
 	})
 ] as const;
 
