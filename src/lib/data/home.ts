@@ -12,7 +12,7 @@ export const links: Array<{ platform: Platform; link: string }> = [
 	{ platform: Platform.GitHub, link: 'https://github.com/bigmac7' },
 	{
 		platform: Platform.Linkedin,
-		link: 'https://www.linkedin.com/maksym-charuta'
+		link: 'https://www.linkedin.com/in/maksym-charuta/'
 	}
 ];
 
