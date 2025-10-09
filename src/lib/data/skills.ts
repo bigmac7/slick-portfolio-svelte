@@ -36,7 +36,7 @@ const defineSkill = <S extends string>(
 
 export const items = [
 	defineSkill({
-		slug: 'python',
+		slug: 'pythonroo',
 		color: 'blue',
 		description: 'My first language',
 		logo: Assets.Python,
@@ -45,11 +45,59 @@ export const items = [
 	}),
 	defineSkill({
 		slug: 'AWS',
-		color: 'orange',
+		color: 'yellow',
 		description: 'Beautiful bunch of services',
 		logo: Assets.AWS,
 		name: 'AWS',
 		category: 'devops'
+	}),
+	defineSkill({
+		slug: 'rust',
+		color: 'orange',
+		description: 'A systems programming language',
+		logo: Assets.Rust,
+		name: 'Rust',
+		category: 'pro-lang'
+	}),
+	defineSkill({
+		slug: 'typescript',
+		color: 'yellow',
+		description: 'A superset of JavaScript',
+		logo: Assets.TypeScript,
+		name: 'TypeScript',
+		category: 'pro-lang'
+	}),
+	defineSkill({
+		slug: 'pandas',
+		color: 'yellow',
+		description: 'A data analysis library',
+		logo: Assets.Pandas,
+		name: 'Pandas',
+		category: 'pro-lang'
+	}),
+	defineSkill({
+		slug: 'flask',
+		color: 'yellow',
+		description: 'A web framework for Python',
+		logo: Assets.Flask,
+		name: 'Flask',
+		category: 'pro-lang'
+	}),
+	defineSkill({
+		slug: 'django',
+		color: 'yellow',
+		description: 'A web framework for Python',
+		logo: Assets.Django,
+		name: 'Django',
+		category: 'pro-lang'
+	}),
+	defineSkill({
+		slug: 'docker',
+		color: 'yellow',
+		description: 'A containerization platform',
+		logo: Assets.Docker,
+		name: 'Docker',
+		category: 'pro-lang'
 	})
 ] as const;
 
