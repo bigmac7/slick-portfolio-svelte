@@ -97,7 +97,7 @@ export const items = [
 		description: 'A containerization platform',
 		logo: Assets.Docker,
 		name: 'Docker',
-		category: 'pro-lang'
+		category: 'devops'
 	})
 ] as const;
 
