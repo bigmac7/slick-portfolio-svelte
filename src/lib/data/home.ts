@@ -21,7 +21,7 @@ export const skills = getSkills(
 	'Docker',
 	'django',
 	'flask',
-	'pythonroo',
+	'python',
 	'rust',
 	'typescript'
 );

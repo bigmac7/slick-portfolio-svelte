@@ -36,7 +36,7 @@ const defineSkill = <S extends string>(
 
 export const items = [
 	defineSkill({
-		slug: 'pythonroo',
+		slug: 'python',
 		color: 'blue',
 		description: 'My first language',
 		logo: Assets.Python,
@@ -105,7 +105,10 @@ export const title = 'Skills';
 
 export const getSkills = (
 	...slugs: Array<StringWithAutoComplete<(typeof items)[number]['slug']>>
-): Array<Skill> => items.filter((it) => slugs.includes(it.slug));
+): Array<Skill> =>
+	items.filter((it) =>
+		slugs.some((s) => s.toLowerCase() === it.slug.toLowerCase())
+	);
 
 export const groupByCategory = (
 	query: string

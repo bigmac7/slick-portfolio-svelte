@@ -14,8 +14,8 @@ const Assets = {
 	Cpp: a('cpp.svg'),
 	Celery: a('celery.svg'),
 	Django: a('django.svg'),
-	FastApi: a('fastapi'),
-	Flask: a('flask.svg'),
+	FastApi: a('no-img.svg'),
+	Flask: a('flask.svg', 'flask-dark.svg'),
 	Go: a('go.svg'),
 	Kafka: a('kafka.svg'),
 	Neo4j: a('neo4j.svg'),
@@ -23,7 +23,7 @@ const Assets = {
 	Numpy: a('numpy.svg'),
 	Pandas: a('pandas.svg'),
 	RabbitMQ: a('rabbitmq.svg'),
-	Rust: a('rust.svg', 'rust-dark.png'),
+	Rust: a('rust.svg', 'rust-dark.svg'),
 	Scrapy: a('scrapy.png'),
 	Selenium: a('selenium.svg'),
 	Docker: a('docker.svg'),
@@ -37,11 +37,11 @@ const Assets = {
 	Kotlin: a('kotlin.png'),
 	Python: a('python.png'),
 	NodeJs: a('node.png'),
-	Deno: a('deno.png', 'deno-dark.png'),
+	Deno: a('deno.png'),
 	Svelte: a('svelte.png'),
 	ExpressJs: a('express.png'),
 	JavaScript: a('js.png'),
-	Fastify: a('fastify.svg', 'fastify-dark.png'),
+	Fastify: a('fastify.svg'),
 	NestJs: a('nest.svg'),
 	Quasar: a('quasar.svg'),
 	SolidJs: a('solid.svg'),
@@ -79,6 +79,6 @@ let currentTheme: boolean;
 
 theme.subscribe((v) => (currentTheme = v));
 
-export const getAssetURL = (asset: Asset): string => {
-	return typeof asset === 'string' ? asset : currentTheme ? asset.dark : asset.light;
+export const getAssetURL = (asset: Asset, isDark = currentTheme): string => {
+	return typeof asset === 'string' ? asset : isDark ? asset.dark : asset.light;
 };
