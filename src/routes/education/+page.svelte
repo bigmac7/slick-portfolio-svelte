@@ -63,6 +63,9 @@
 								/>
 								<div class="text-[1.3em]">{education.degree}</div>
 								<div>{education.organization}</div>
+								{#if education.description}
+									<div class="text-[0.95em] text-[var(--tertiary-text)]">{education.description}</div>
+								{/if}
 								<div class="col text-[0.9em]">
 									<CardDivider />
 									<div class="row items-center gap-2">
