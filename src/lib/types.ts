@@ -69,6 +69,25 @@ export interface Experience<S extends string = string> extends Project<S> {
 	contract: ContractType;
 }
 
+export interface BlogPost {
+	slug: string;
+	title: string;
+	date: Date;
+	/** Optional last-updated date, distinct from the original publish date. */
+	updated?: Date;
+	tags: Array<string>;
+	/** Short summary used in listings and meta description. */
+	excerpt: string;
+	/** Estimated reading time in minutes. */
+	readingTime: number;
+	/** Optional cover image URL. */
+	cover?: string;
+	/** Optional author override (defaults to the site owner). */
+	author?: string;
+	/** Raw markdown body (frontmatter stripped). */
+	content: string;
+}
+
 export interface Education<S extends string = string> extends Item<S> {
 	organization: string;
 	location: string;
