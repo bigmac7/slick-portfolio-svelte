@@ -27,6 +27,28 @@ export interface ParsedFrontmatter {
 
 const FRONTMATTER_REGEX = /^﻿?---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
 
+/**
+ * Remove a trailing YAML comment (` # ...`) from an unquoted value. A `#` only
+ * starts a comment when it is preceded by whitespace and sits outside of quotes,
+ * so values like `#fff` or `"a # b"` are preserved.
+ */
+const stripComment = (value: string): string => {
+	let inSingle = false;
+	let inDouble = false;
+
+	for (let i = 0; i < value.length; i++) {
+		const ch = value[i];
+
+		if (ch === '"' && !inSingle) inDouble = !inDouble;
+		else if (ch === "'" && !inDouble) inSingle = !inSingle;
+		else if (ch === '#' && !inSingle && !inDouble && i > 0 && /\s/.test(value[i - 1])) {
+			return value.slice(0, i).trimEnd();
+		}
+	}
+
+	return value;
+};
+
 const stripQuotes = (value: string): string => {
 	const trimmed = value.trim();
 
@@ -99,7 +121,7 @@ export const parseFrontmatter = (source: string): ParsedFrontmatter => {
 		// Block-array item, e.g. `  - value`
 		const listItem = line.match(/^\s*-\s+(.*)$/);
 		if (listItem && currentArrayKey) {
-			(data[currentArrayKey] as Array<string>).push(stripQuotes(listItem[1]));
+			(data[currentArrayKey] as Array<string>).push(stripQuotes(stripComment(listItem[1])));
 			continue;
 		}
 
@@ -107,7 +129,7 @@ export const parseFrontmatter = (source: string): ParsedFrontmatter => {
 		if (!keyValue) continue;
 
 		const key = keyValue[1];
-		const rawValue = keyValue[2].trim();
+		const rawValue = stripComment(keyValue[2].trim()).trim();
 
 		if (rawValue === '') {
 			// Likely the start of a block array; initialise and wait for `-` items.

@@ -7,8 +7,16 @@ export const title = 'Blog';
  * Eagerly import every markdown file in `./posts` as a raw string at build
  * time. Adding a new `.md` file to that folder is all that's needed to publish
  * a new post — no code changes required.
+ *
+ * Underscore-prefixed files (e.g. `_template.md`) are excluded entirely, so
+ * reference/scaffold files are never bundled or shipped to the browser. For
+ * actual work-in-progress posts, set `draft: true` in the frontmatter instead —
+ * those are hidden from the site but still loaded (handy for local previews).
  */
-const modules = import.meta.glob('./posts/*.md', { as: 'raw', eager: true });
+const modules = import.meta.glob(['./posts/*.md', '!./posts/_*.md'], {
+	as: 'raw',
+	eager: true
+});
 
 const WORDS_PER_MINUTE = 200;
 
