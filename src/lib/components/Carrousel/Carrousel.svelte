@@ -12,7 +12,6 @@
 
 	let timeout: unknown;
 	let index = 0;
-	let toRight = true;
 
 	$: {
 		if (element) {
@@ -23,50 +22,35 @@
 		}
 	}
 
+	// Wrap around both ends so the carousel loops instead of bouncing.
 	const slide = (right: boolean) => {
-		if (right) {
-			if (index < items.length - 1) {
-				index = index + 1;
-			} else {
-				index = index - 1;
-				toRight = false;
-			}
-		} else {
-			if (index > 0) {
-				index = index - 1;
-			} else {
-				index = index + 1;
-				toRight = true;
-			}
-		}
+		const count = items.length;
+		if (count === 0) return;
+
+		index = right ? (index + 1) % count : (index - 1 + count) % count;
 	};
 
-	const toggle = (right: boolean) => {
+	const toggle = () => {
 		clearTimeout(timeout as number);
 
 		timeout = setTimeout(() => {
-			slide(right);
-
-			toggle(toRight);
+			slide(true);
+			toggle();
 		}, delay);
 	};
 
 	const toggleLeft = () => {
-		clearTimeout(timeout as number);
-		toRight = false;
 		slide(false);
-		toggle(toRight);
+		toggle();
 	};
 
 	const toggleRight = () => {
-		clearTimeout(timeout as number);
-		toRight = true;
 		slide(true);
-		toggle(toRight);
+		toggle();
 	};
 
 	onMount(() => {
-		toggle(true);
+		toggle();
 	});
 </script>
 
