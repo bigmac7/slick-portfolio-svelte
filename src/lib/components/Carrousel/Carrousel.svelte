@@ -17,15 +17,23 @@
 
 	let index = items.length; // start in the middle (real) copy
 	let animate = true;
+	let moving = false; // guards against input piling up mid-animation
 	let timeout: ReturnType<typeof setTimeout> | undefined;
 
 	const step = (right: boolean) => {
+		// Ignore extra input while a step is animating, so index can never run
+		// past the cloned buffer (which would scroll into empty space).
+		if (moving || items.length === 0) return;
+		moving = true;
+		animate = true;
 		index += right ? 1 : -1;
 	};
 
 	const onTransitionEnd = (e: TransitionEvent) => {
 		// Ignore transitions bubbling up from child elements (e.g. theme changes).
 		if (e.propertyName !== 'transform' || e.target !== e.currentTarget) return;
+
+		moving = false;
 
 		const n = items.length;
 		if (n === 0) return;
