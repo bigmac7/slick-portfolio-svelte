@@ -81,9 +81,9 @@
 		<UIcon icon="i-carbon-chevron-left" />
 	</button>
 
-	<div bind:this={element} class="row overflow-hidden box-content w-150px">
+	<div bind:this={element} class="row overflow-hidden box-content w-150px shrink-0">
 		{#each items as item}
-			<div class="box-border w-150px p-15px col-center">
+			<div class="box-border w-150px p-15px col-center shrink-0">
 				<img class="w-120px h-120px aspect-square" src={getAssetURL(item.logo, $theme)} alt={item.name} />
 				<span class="text-center m-t-20px">{item.name}</span>
 			</div>
