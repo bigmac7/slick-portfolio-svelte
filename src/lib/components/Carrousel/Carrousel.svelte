@@ -1,11 +1,15 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
-	import type { Skill } from '$lib/types';
-	import { getAssetURL } from '$lib/data/assets';
-	import { theme } from '$lib/stores/theme';
+	import { onDestroy, onMount, untrack } from 'svelte';
+	import type { Skill } from '#lib/types.ts';
+	import { getAssetURL } from '#lib/data/assets.ts';
+	import { theme } from '#lib/stores/theme.ts';
 	import UIcon from '../Icon/UIcon.svelte';
 
-	export let items: Array<Skill> = [];
+	interface Props {
+		items?: Array<Skill>;
+	}
+
+	let { items = [] }: Props = $props();
 
 	const delay = 2000;
 	const itemWidth = 150;
@@ -13,10 +17,10 @@
 	// Triple the list so a move one step past either end lands on an identical
 	// clone; once the (uniform) animation finishes we snap back to the matching
 	// real item without a transition, so last -> first looks like any other step.
-	$: loop = [...items, ...items, ...items];
+	let loop = $derived([...items, ...items, ...items]);
 
-	let index = items.length; // start in the middle (real) copy
-	let animate = true;
+	let index = $state(untrack(() => items.length)); // start in the middle (real) copy
+	let animate = $state(true);
 	let moving = false; // guards against input piling up mid-animation
 	let timeout: ReturnType<typeof setTimeout> | undefined;
 
@@ -39,7 +43,7 @@
 		if (n === 0) return;
 
 		if (index >= 2 * n || index < n) {
-			index = ((index % n) + n) % n + n; // fold back into the middle copy
+			index = (((index % n) + n) % n) + n; // fold back into the middle copy
 			animate = false; // jump instantly to the identical real item
 			// re-enable the transition once the instant jump has painted
 			requestAnimationFrame(() => requestAnimationFrame(() => (animate = true)));
@@ -71,7 +75,7 @@
 <div class="carrousel flex-[0.5] row-center">
 	<button
 		class="row-center font-500 p-5px m-y-0px m-x-10px cursor-pointer border-1px border-solid border-[var(--border)] bg-transparent rounded-[50%] hover:border-[var(--border-hover)]"
-		on:click={toggleLeft}
+		onclick={toggleLeft}
 	>
 		<UIcon icon="i-carbon-chevron-left" />
 	</button>
@@ -81,7 +85,7 @@
 			class="row"
 			style:transform={`translateX(${-index * itemWidth}px)`}
 			style:transition={animate ? 'transform 400ms ease' : 'none'}
-			on:transitionend={onTransitionEnd}
+			ontransitionend={onTransitionEnd}
 		>
 			{#each loop as item}
 				<div class="box-border w-150px p-15px col-center shrink-0">
@@ -98,7 +102,7 @@
 
 	<button
 		class="row-center font-500 p-5px m-y-0px m-x-10px cursor-pointer border-1px border-solid border-[var(--border)] bg-transparent rounded-[50%] hover:border-[var(--border-hover)]"
-		on:click={toggleRight}
+		onclick={toggleRight}
 	>
 		<UIcon icon="i-carbon-chevron-right" />
 	</button>

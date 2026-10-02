@@ -1,4 +1,4 @@
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 import { writable } from 'svelte/store';
 
 const key = '@riadh-adrani-theme';
@@ -29,8 +29,7 @@ export const onHydrated = () => {
 		if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
 			// dark mode
 			toggleTheme(true);
-		}
-		else {
+		} else {
 			// light mode
 			toggleTheme(false);
 		}

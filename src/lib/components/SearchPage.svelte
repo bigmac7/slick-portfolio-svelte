@@ -1,25 +1,32 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount, untrack, type Snippet } from 'svelte';
 	import CommonPage from './CommonPage.svelte';
 	import Input from './Input/Input.svelte';
-	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
-	import { base } from '$app/paths';
+	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 
-	export let title = 'Title';
-	export let search = '';
-    let searchInput: Input;
-
-	const dispatch = createEventDispatcher();
-
-	let mounted = false;
-
-	$: {
-		dispatch('search', { search: search.trim().toLowerCase() });
+	interface Props {
+		title?: string;
+		search?: string;
+		onsearch?: (search: string) => void;
+		children?: Snippet;
 	}
 
-	$: {
-		if (browser && mounted) {
+	let { title = 'Title', search = $bindable(''), onsearch, children }: Props = $props();
+	let searchInput: Input | undefined = $state();
+
+	let mounted = $state(false);
+
+	$effect(() => {
+		const query = search.trim().toLowerCase();
+
+		untrack(() => onsearch?.(query));
+	});
+
+	$effect(() => {
+		if (mounted) {
+			// a throwaway copy used only to build the new URL; it doesn't need to be reactive
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			let searchParams = new URLSearchParams(window.location.search);
 
 			searchParams.set('q', search);
@@ -31,14 +38,14 @@
 			const state = window.history.state;
 
 			window.history.replaceState(state, '', url);
-			
-			if ($page.url.pathname.startsWith(`${base}/search`)) {
+
+			if (page.url.pathname.startsWith(resolve('/search'))) {
 				if (searchInput) {
 					searchInput.focus();
 				}
 			}
 		}
-	}
+	});
 
 	onMount(() => {
 		let searchParams = new URLSearchParams(window.location.search);
@@ -53,6 +60,6 @@
 		<Input bind:this={searchInput} bind:value={search} placeholder={'Search...'} />
 	</div>
 	<div class="w-100% col flex-1">
-		<slot />
+		{@render children?.()}
 	</div>
 </CommonPage>

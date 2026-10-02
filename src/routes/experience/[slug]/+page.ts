@@ -1,4 +1,4 @@
-import { items } from '@data/experience';
+import { items } from '#lib/data/experience.ts';
 
 export function entries() {
 	return items.map((item) => ({ slug: item.slug }));

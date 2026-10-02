@@ -1,5 +1,5 @@
-import type { BlogPost } from '$lib/types';
-import { parseFrontmatter, type FrontmatterValue } from '$lib/utils/frontmatter';
+import type { BlogPost } from '#lib/types.ts';
+import { parseFrontmatter, type FrontmatterValue } from '#lib/utils/frontmatter.ts';
 
 export const title = 'Blog';
 

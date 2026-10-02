@@ -1,29 +1,29 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { browser } from '$app/environment';
+	import { page } from '$app/state';
+	import { browser } from '$app/env';
 	import { goto } from '$app/navigation';
-	import SearchPage from '$lib/components/SearchPage.svelte';
-	import BlogCard from '$lib/components/BlogCard/BlogCard.svelte';
-	import Chip from '$lib/components/Chip/Chip.svelte';
-	import UIcon from '$lib/components/Icon/UIcon.svelte';
-	import { items, title, getAllTags } from '@data/blog';
-	import type { BlogPost } from '$lib/types';
+	import SearchPage from '#lib/components/SearchPage.svelte';
+	import BlogCard from '#lib/components/BlogCard/BlogCard.svelte';
+	import Chip from '#lib/components/Chip/Chip.svelte';
+	import UIcon from '#lib/components/Icon/UIcon.svelte';
+	import { items, title, getAllTags } from '#lib/data/blog.ts';
+	import type { BlogPost } from '#lib/types.ts';
 	import { isBlank } from '@riadh-adrani/utils';
 
 	const allTags = getAllTags();
 
-	let query = '';
+	let query = $state('');
 
 	// The active tag comes from the `?tag=` query param so tag links are shareable.
 	// Guarded by `browser` because searchParams is unavailable during prerendering.
-	$: activeTag = browser ? $page.url.searchParams.get('tag') ?? '' : '';
+	let activeTag = $derived(browser ? (page.url.searchParams.get('tag') ?? '') : '');
 
-	const onSearch = (e: CustomEvent<{ search: string }>) => {
-		query = e.detail.search;
+	const onSearch = (s: string) => {
+		query = s;
 	};
 
 	const selectTag = (tag: string) => {
-		const url = new URL($page.url);
+		const url = new URL(page.url.href);
 
 		if (tag === '' || tag === activeTag) {
 			url.searchParams.delete('tag');
@@ -31,30 +31,32 @@
 			url.searchParams.set('tag', tag);
 		}
 
-		goto(`${url.pathname}${url.search}`, { keepFocus: true, noScroll: true });
+		goto(`${url.pathname}${url.search}`, { reset: false });
 	};
 
-	$: result = items.filter((post: BlogPost) => {
-		const matchesTag = isBlank(activeTag) || post.tags.includes(activeTag);
+	let result = $derived(
+		items.filter((post: BlogPost) => {
+			const matchesTag = isBlank(activeTag) || post.tags.includes(activeTag);
 
-		if (!matchesTag) return false;
+			if (!matchesTag) return false;
 
-		if (isBlank(query)) return true;
+			if (isBlank(query)) return true;
 
-		const haystack = [post.title, post.excerpt, ...post.tags].join(' ').toLowerCase();
+			const haystack = [post.title, post.excerpt, ...post.tags].join(' ').toLowerCase();
 
-		return haystack.includes(query);
-	});
+			return haystack.includes(query);
+		})
+	);
 </script>
 
-<SearchPage {title} on:search={onSearch}>
+<SearchPage {title} onsearch={onSearch}>
 	{#if allTags.length > 0}
 		<div class="row flex-wrap items-center gap-1 mt-2">
-			<Chip active={activeTag === ''} on:click={() => selectTag('')}>
+			<Chip active={activeTag === ''} onclick={() => selectTag('')}>
 				<span class="text-0.85em">All</span>
 			</Chip>
 			{#each allTags as tag}
-				<Chip active={tag === activeTag} on:click={() => selectTag(tag)}>
+				<Chip active={tag === activeTag} onclick={() => selectTag(tag)}>
 					<span class="text-0.85em">#{tag}</span>
 				</Chip>
 			{/each}

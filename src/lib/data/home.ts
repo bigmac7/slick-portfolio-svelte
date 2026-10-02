@@ -1,4 +1,4 @@
-import { Platform } from '$lib/types';
+import { Platform } from '#lib/types.ts';
 import { getSkills } from './skills';
 
 export const title = 'Home';
@@ -7,7 +7,7 @@ export const name = 'Maksym';
 
 export const lastName = 'Charuta';
 
-export const description = ['Software Engineer', 'Degree Apprentice', 'Follower of Christ'];
+export const description = ['Software Engineer', 'Follower of Christ'];
 export const links: Array<{ platform: Platform; link: string }> = [
 	{ platform: Platform.GitHub, link: 'https://github.com/bigmac7' },
 	{
@@ -19,9 +19,12 @@ export const links: Array<{ platform: Platform; link: string }> = [
 export const skills = getSkills(
 	'AWS',
 	'Docker',
+	'kubernetes',
 	'django',
 	'flask',
 	'python',
-	'rust',
-	'typescript'
+	'numpy',
+	'pandas',
+	'typescript',
+	'svelte'
 );

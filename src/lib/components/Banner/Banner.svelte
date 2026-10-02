@@ -1,7 +1,12 @@
 <script lang="ts">
-	export let img = '';
-	export let useDefaultDimensions = true;
-	export let classes = '';
+	interface Props {
+		img?: string;
+		useDefaultDimensions?: boolean;
+		classes?: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let { img = '', useDefaultDimensions = true, classes = '', children }: Props = $props();
 </script>
 
 <div
@@ -13,13 +18,14 @@
 	} items-center skill-cover  ${classes}`}
 >
 	<div class="p-x-2 col flex-1">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 
 <style lang="scss">
 	.skill-cover {
-		background: linear-gradient(90deg, var(--main) 0%, var(--main) 55%, var(--main-60) 130%),
+		background:
+			linear-gradient(90deg, var(--main) 0%, var(--main) 55%, var(--main-60) 130%),
 			no-repeat 110% 45% / 50% var(--bg-img);
 
 		border-block-end: 1px solid var(--border);

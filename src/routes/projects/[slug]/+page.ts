@@ -1,4 +1,4 @@
-import { items } from '@data/projects';
+import { items } from '#lib/data/projects.ts';
 
 export const prerender = false;
 

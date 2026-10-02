@@ -1,6 +1,5 @@
 import Assets from './assets';
 import type { Skill, SkillCategory } from '../types';
-import svelte from '../md/svelte.md?raw';
 import { omit, type StringWithAutoComplete } from '@riadh-adrani/utils';
 
 const defineSkillCategory = <S extends string>(data: SkillCategory<S>): SkillCategory<S> => data;
@@ -52,14 +51,6 @@ export const items = [
 		category: 'devops'
 	}),
 	defineSkill({
-		slug: 'rust',
-		color: 'orange',
-		description: 'A systems programming language',
-		logo: Assets.Rust,
-		name: 'Rust',
-		category: 'pro-lang'
-	}),
-	defineSkill({
 		slug: 'typescript',
 		color: 'yellow',
 		description: 'A superset of JavaScript',
@@ -73,7 +64,7 @@ export const items = [
 		description: 'A data analysis library',
 		logo: Assets.Pandas,
 		name: 'Pandas',
-		category: 'pro-lang'
+		category: 'library'
 	}),
 	defineSkill({
 		slug: 'flask',
@@ -81,7 +72,7 @@ export const items = [
 		description: 'A web framework for Python',
 		logo: Assets.Flask,
 		name: 'Flask',
-		category: 'pro-lang'
+		category: 'framework'
 	}),
 	defineSkill({
 		slug: 'django',
@@ -89,7 +80,7 @@ export const items = [
 		description: 'A web framework for Python',
 		logo: Assets.Django,
 		name: 'Django',
-		category: 'pro-lang'
+		category: 'framework'
 	}),
 	defineSkill({
 		slug: 'docker',
@@ -98,6 +89,30 @@ export const items = [
 		logo: Assets.Docker,
 		name: 'Docker',
 		category: 'devops'
+	}),
+	defineSkill({
+		slug: 'kubernetes',
+		color: 'blue',
+		description: 'Container orchestration',
+		logo: Assets.Kubernetes,
+		name: 'Kubernetes',
+		category: 'devops'
+	}),
+	defineSkill({
+		slug: 'numpy',
+		color: 'blue',
+		description: 'Numerical computing for Python',
+		logo: Assets.Numpy,
+		name: 'NumPy',
+		category: 'library'
+	}),
+	defineSkill({
+		slug: 'svelte',
+		color: 'orange',
+		description: 'A compiler-based UI framework, used to build this site',
+		logo: Assets.Svelte,
+		name: 'Svelte',
+		category: 'framework'
 	})
 ] as const;
 
@@ -106,9 +121,7 @@ export const title = 'Skills';
 export const getSkills = (
 	...slugs: Array<StringWithAutoComplete<(typeof items)[number]['slug']>>
 ): Array<Skill> =>
-	items.filter((it) =>
-		slugs.some((s) => s.toLowerCase() === it.slug.toLowerCase())
-	);
+	items.filter((it) => slugs.some((s) => s.toLowerCase() === it.slug.toLowerCase()));
 
 export const groupByCategory = (
 	query: string

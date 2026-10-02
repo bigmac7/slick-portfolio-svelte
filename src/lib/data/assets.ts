@@ -1,8 +1,12 @@
-import type { Asset } from '$lib/types';
-import { theme } from '$lib/stores/theme';
-import { base } from '$app/paths';
+import type { AssetPath } from '$app/types';
+import type { Asset } from '#lib/types.ts';
+import { theme } from '#lib/stores/theme.ts';
+import { asset } from '$app/paths';
 
-const gh = (file: string) => `${base}/logos/${file}`;
+// Store paths relative to `static/` and resolve them with `asset()` when rendering (see `getAssetURL`),
+// so the base path is worked out per page and the site works both at a domain root (Netlify)
+// and under a sub-path (GitHub Pages).
+const gh = (file: string) => `logos/${file}`;
 
 const a = (light: string, dark?: string): Asset =>
 	dark ? { dark: gh(dark), light: gh(light) } : gh(light);
@@ -79,6 +83,8 @@ let currentTheme: boolean;
 
 theme.subscribe((v) => (currentTheme = v));
 
-export const getAssetURL = (asset: Asset, isDark = currentTheme): string => {
-	return typeof asset === 'string' ? asset : isDark ? asset.dark : asset.light;
+export const getAssetURL = (item: Asset, isDark = currentTheme): string => {
+	const file = typeof item === 'string' ? item : isDark ? item.dark : item.light;
+
+	return asset(file as AssetPath);
 };

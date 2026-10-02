@@ -1,25 +1,26 @@
 <script lang="ts">
-	import { items, title } from '@data/projects';
-	import * as skills from '@data/skills';
+	import { items, title } from '#lib/data/projects.ts';
+	import * as skills from '#lib/data/skills.ts';
 	import { onMount } from 'svelte';
 
-	import type { Project, Skill } from '$lib/types';
+	import type { Project, Skill } from '#lib/types.ts';
 
-	import Chip from '$lib/components/Chip/Chip.svelte';
-	import ProjectCard from '$lib/components/ProjectCard/ProjectCard.svelte';
-	import SearchPage from '$lib/components/SearchPage.svelte';
-	import UIcon from '$lib/components/Icon/UIcon.svelte';
+	import Chip from '#lib/components/Chip/Chip.svelte';
+	import ProjectCard from '#lib/components/ProjectCard/ProjectCard.svelte';
+	import SearchPage from '#lib/components/SearchPage.svelte';
+	import UIcon from '#lib/components/Icon/UIcon.svelte';
 
 	interface SkillFilter extends Skill {
 		isSelected?: boolean;
 	}
 
-	let filters: Array<SkillFilter> = skills.items.filter((it) => {
-		return items.some((project) => project.skills.some((skill) => skill.slug === it.slug));
-	});
+	let filters: Array<SkillFilter> = $state(
+		skills.items.filter((it) => {
+			return items.some((project) => project.skills.some((skill) => skill.slug === it.slug));
+		})
+	);
 
-	let search = '';
-	let displayed: Array<Project> = [];
+	let search = $state('');
 
 	const isSelected = (slug: string): boolean => {
 		return filters.some((item) => item.slug === slug && item.isSelected);
@@ -35,8 +36,8 @@
 		});
 	};
 
-	$: {
-		displayed = items.filter((project) => {
+	let displayed: Array<Project> = $derived(
+		items.filter((project) => {
 			const isFiltered =
 				filters.every((item) => !item.isSelected) ||
 				project.skills.some((tech) =>
@@ -48,11 +49,11 @@
 				project.name.trim().toLowerCase().includes(search.trim().toLowerCase());
 
 			return isFiltered && isSearched;
-		});
-	}
+		})
+	);
 
-	const onSearch = (e: CustomEvent<{ search: string }>) => {
-		search = e.detail.search;
+	const onSearch = (s: string) => {
+		search = s;
 	};
 
 	onMount(() => {
@@ -70,10 +71,10 @@
 	});
 </script>
 
-<SearchPage {title} on:search={onSearch}>
+<SearchPage {title} onsearch={onSearch}>
 	<div class="projects-filters">
 		{#each filters as tech}
-			<Chip active={tech.isSelected} classes={'text-0.8em'} on:click={() => onSelected(tech.slug)}
+			<Chip active={tech.isSelected} classes={'text-0.8em'} onclick={() => onSelected(tech.slug)}
 				>{tech.name}</Chip
 			>
 		{/each}

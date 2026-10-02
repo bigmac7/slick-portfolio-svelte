@@ -1,22 +1,18 @@
 <script lang="ts">
-	import Card from '$lib/components/Card/Card.svelte';
-	import Chip from '$lib/components/Chip/Chip.svelte';
-	import UIcon from '$lib/components/Icon/UIcon.svelte';
-	import SearchPage from '$lib/components/SearchPage.svelte';
-	import { getAssetURL } from '$lib/data/assets';
+	import Card from '#lib/components/Card/Card.svelte';
+	import Chip from '#lib/components/Chip/Chip.svelte';
+	import UIcon from '#lib/components/Icon/UIcon.svelte';
+	import SearchPage from '#lib/components/SearchPage.svelte';
+	import { getAssetURL } from '#lib/data/assets.ts';
 
-	import { title, items } from '@data/education';
-	import type { Education } from '$lib/types';
-	import { computeExactDuration, getTimeDiff } from '$lib/utils';
-	import CardDivider from '$lib/components/Card/CardDivider.svelte';
+	import { title, items } from '#lib/data/education.ts';
+	import type { Education } from '#lib/types.ts';
+	import { computeExactDuration } from '#lib/utils/index.ts';
+	import CardDivider from '#lib/components/Card/CardDivider.svelte';
 
-	let search = '';
+	let result: Array<Education> = $state(items);
 
-	let result: Array<Education> = items;
-
-	const onSearch = (ev: CustomEvent<{ search: string }>) => {
-		const s = ev.detail.search;
-
+	const onSearch = (s: string) => {
 		result = items.filter((it) => {
 			return (
 				it.degree.toLowerCase().includes(s) ||
@@ -30,7 +26,7 @@
 	};
 </script>
 
-<SearchPage {title} {search} on:search={onSearch}>
+<SearchPage {title} onsearch={onSearch}>
 	<div class="col items-center relative mt-10 flex-1">
 		{#if result.length === 0}
 			<div class="p-5 col-center gap-3 m-y-auto text-[var(--accent-text)] flex-1">
@@ -40,14 +36,14 @@
 		{:else}
 			<div
 				class="w-[0.5px] hidden lg:flex top-0 bottom-0 py-50px bg-[var(--border)] absolute rounded"
-			/>
+			></div>
 			{#each result as education, index (education.slug)}
 				<div
 					class={`flex ${
 						index % 2 !== 0 ? 'flex-row' : 'flex-row-reverse'
 					} relative items-center w-full my-[10px]`}
 				>
-					<div class="flex-1 hidden lg:flex" />
+					<div class="flex-1 hidden lg:flex"></div>
 					<div class="hidden lg:inline p-15px bg-[var(--main)] rounded">
 						<UIcon icon="i-carbon-condition-point" />
 					</div>
@@ -64,7 +60,9 @@
 								<div class="text-[1.3em]">{education.degree}</div>
 								<div>{education.organization}</div>
 								{#if education.description}
-									<div class="text-[0.95em] text-[var(--tertiary-text)]">{education.description}</div>
+									<div class="text-[0.95em] text-[var(--tertiary-text)]">
+										{education.description}
+									</div>
 								{/if}
 								<div class="col text-[0.9em]">
 									<CardDivider />

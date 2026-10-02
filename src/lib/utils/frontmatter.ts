@@ -25,7 +25,7 @@ export interface ParsedFrontmatter {
 	content: string;
 }
 
-const FRONTMATTER_REGEX = /^﻿?---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
+const FRONTMATTER_REGEX = /^\uFEFF?---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
 
 /**
  * Remove a trailing YAML comment (` # ...`) from an unquoted value. A `#` only

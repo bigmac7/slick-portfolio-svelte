@@ -14,6 +14,7 @@ author: # defaults to the site owner if blank
 # Publishing
 draft: false # `true` hides the post from the site but still loads it (local previews).
 
+
 # Block-list form for tags is also supported:
 # tags:
 #   - example

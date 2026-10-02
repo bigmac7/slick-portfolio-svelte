@@ -6,26 +6,36 @@
 	import { marked } from 'marked';
 	import 'prismjs/components/prism-typescript';
 	import 'prismjs/themes/prism-tomorrow.css';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 
-	let container: HTMLDivElement;
+	let container: HTMLDivElement | undefined = $state();
+	let html = $state('');
 
-	export let content: string;
+	interface Props {
+		content: string;
+	}
 
-	onMount(() => {
+	let { content }: Props = $props();
+
+	onMount(async () => {
 		marked.use(gfmHeadingId());
 		marked.use(mangle());
 
 		const sanitizer = createSanitizer(window);
 
-		if (window) {
-			const parsed = marked.parse(content);
+		const parsed = await marked.parse(content);
 
-			container.innerHTML = sanitizer.sanitize(parsed);
+		html = sanitizer.sanitize(parsed);
 
+		await tick();
+
+		if (container) {
 			Prism.highlightAllUnder(container);
 		}
 	});
 </script>
 
-<div bind:this={container} class="markdown-container" />
+<div bind:this={container} class="markdown-container">
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -- sanitized with DOMPurify above -->
+	{@html html}
+</div>

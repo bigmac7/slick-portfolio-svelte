@@ -1,31 +1,36 @@
 <script lang="ts">
-	import { title } from '@data/skills';
-	import * as projects from '@data/projects';
-	import * as experiences from '@data/experience';
+	import { title } from '#lib/data/skills.ts';
+	import * as projects from '#lib/data/projects.ts';
+	import * as experiences from '#lib/data/experience.ts';
 
-	import { base } from '$app/paths';
-	import { getAssetURL } from '$lib/data/assets';
+	import { resolve } from '$app/paths';
+	import type { ResolvedPathname } from '$app/types';
+	import { getAssetURL } from '#lib/data/assets.ts';
 
-	import type { Skill } from '$lib/types';
+	import type { Skill } from '#lib/types.ts';
 
-	import MainTitle from '$lib/components/MainTitle/MainTitle.svelte';
-	import CardDivider from '$lib/components/Card/CardDivider.svelte';
-	import CardLogo from '$lib/components/Card/CardLogo.svelte';
-	import Markdown from '$lib/components/Markdown.svelte';
-	import TabTitle from '$lib/components/TabTitle.svelte';
-	import Chip from '$lib/components/Chip/Chip.svelte';
-	import Banner from '$lib/components/Banner/Banner.svelte';
-	import UIcon from '$lib/components/Icon/UIcon.svelte';
+	import MainTitle from '#lib/components/MainTitle/MainTitle.svelte';
+	import CardDivider from '#lib/components/Card/CardDivider.svelte';
+	import CardLogo from '#lib/components/Card/CardLogo.svelte';
+	import Markdown from '#lib/components/Markdown.svelte';
+	import TabTitle from '#lib/components/TabTitle.svelte';
+	import Chip from '#lib/components/Chip/Chip.svelte';
+	import Banner from '#lib/components/Banner/Banner.svelte';
+	import UIcon from '#lib/components/Icon/UIcon.svelte';
 
 	type Related = {
 		display: string;
 		name: string;
 		img: string;
 		type: 'projects' | 'experience';
-		url: string;
+		url: ResolvedPathname;
 	};
 
-	export let data: { skill?: Skill };
+	interface Props {
+		data: { skill?: Skill };
+	}
+
+	let { data }: Props = $props();
 
 	const getRelatedProjects = (): Array<Related> => {
 		const out: Array<Related> = [];
@@ -43,7 +48,7 @@
 					display: `${item.name} (${item.type})`,
 					name: item.name,
 					type: 'projects',
-					url: `/projects/${item.slug}`
+					url: resolve('/projects/[slug]', { slug: item.slug })
 				});
 			}
 		});
@@ -55,7 +60,7 @@
 					display: `${item.name} @ ${item.company}`,
 					name: item.name,
 					type: 'experience',
-					url: `/experience/${item.slug}`
+					url: resolve('/experience/[slug]', { slug: item.slug })
 				});
 			}
 		});
@@ -63,9 +68,9 @@
 		return out;
 	};
 
-	$: computedTitle = data.skill ? `${data.skill.name} - ${title}` : title;
+	let computedTitle = $derived(data.skill ? `${data.skill.name} - ${title}` : title);
 
-	$: related = data.skill ? getRelatedProjects() : [];
+	let related = $derived(data.skill ? getRelatedProjects() : []);
 </script>
 
 <TabTitle title={computedTitle} />
@@ -96,13 +101,10 @@
 			<div class="self-stretch mb-2">
 				<CardDivider />
 			</div>
-			<div class="flex flex-row gap-1 self-stretch flex-wrap ">
+			<div class="flex flex-row gap-1 self-stretch flex-wrap">
 				<div class="px-10px">
 					{#each related as item}
-						<Chip
-							classes="inline-flex flex-row items-center justify-center"
-							href={`${base}${item.url}`}
-						>
+						<Chip classes="inline-flex flex-row items-center justify-center" href={item.url}>
 							<CardLogo src={item.img} alt={item.name} radius={'0px'} size={15} classes="mr-2" />
 							<span class="text-[0.9em]">{item.display}</span>
 						</Chip>
