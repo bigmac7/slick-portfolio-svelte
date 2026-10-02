@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { computeExactDuration, countMonths, getMonthName } from '#lib/utils/helpers.ts';
+	import { computeExactDuration, getMonthName } from '#lib/utils/helpers.ts';
 	import Chip from '../Chip/Chip.svelte';
 	import Card from '../Card/Card.svelte';
 	import CardTitle from '../Card/CardTitle.svelte';
@@ -17,7 +17,6 @@
 	}
 
 	let { project }: Props = $props();
-	let months = $derived(countMonths(project.period.from, project.period.to));
 	// $: period = `${months} month${months > 1 ? 's' : ''}`;
 	// $: period = `${getTimeDiff(
 	// 	project.period.from,

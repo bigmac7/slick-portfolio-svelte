@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Experience } from '#lib/types.ts';
-	import { computeExactDuration, getMonthName, getTimeDiff } from '#lib/utils/helpers.ts';
+	import { computeExactDuration, getMonthName } from '#lib/utils/helpers.ts';
 	import Card from '../Card/Card.svelte';
 	import CardLogo from '../Card/CardLogo.svelte';
 	import CardTitle from '../Card/CardTitle.svelte';

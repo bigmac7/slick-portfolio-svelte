@@ -7,7 +7,7 @@
 
 	import { title, items } from '#lib/data/education.ts';
 	import type { Education } from '#lib/types.ts';
-	import { computeExactDuration, getTimeDiff } from '#lib/utils/index.ts';
+	import { computeExactDuration } from '#lib/utils/index.ts';
 	import CardDivider from '#lib/components/Card/CardDivider.svelte';
 
 	let result: Array<Education> = $state(items);

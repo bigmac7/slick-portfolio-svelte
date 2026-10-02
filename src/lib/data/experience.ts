@@ -32,7 +32,7 @@ export const items: Array<Experience> = [
 		links: [],
 		logo: Assets.Unknown,
 		shortDescription: 'Making Automotive Applications'
-	},
+	}
 ];
 
 export const title = 'Experience';

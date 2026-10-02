@@ -25,6 +25,8 @@
 
 	$effect(() => {
 		if (mounted) {
+			// a throwaway copy used only to build the new URL; it doesn't need to be reactive
+			// eslint-disable-next-line svelte/prefer-svelte-reactivity
 			let searchParams = new URLSearchParams(window.location.search);
 
 			searchParams.set('q', search);

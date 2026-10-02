@@ -5,7 +5,7 @@ import type { Item, Skill } from '#lib/types.ts';
 dayjs.extend(duration);
 
 export const countMonths = (from: Date, to: Date = new Date()): number => {
-	let firstYear = 0;
+	let firstYear: number;
 	let wholeYears = 0;
 	let newYear = 0;
 
@@ -49,8 +49,8 @@ export function getTimeDiff(date1: Date, date2 = new Date(Date.now() + 1000 * 60
 
 	const duration = dayjs.duration(d2.diff(d1));
 
-	let n = 0;
-	let u = 'day';
+	let n: number;
+	let u: string;
 
 	if (duration.as('days') <= 7) {
 		u = 'day';
@@ -84,7 +84,7 @@ export function filterItemsByQuery<T extends ItemOrSkill>(
 }
 
 function doesQueryExistInItemOrAttributes(
-	item: any,
+	item: unknown,
 	query: string,
 	ignoredProperties: string[] = []
 ): boolean {
@@ -107,11 +107,12 @@ function doesQueryExistInItemOrAttributes(
 		} else {
 			return Object.keys(item).some(
 				(key) =>
-					!ignoredProperties.includes(key) && doesQueryExistInItemOrAttributes(item[key], query)
+					!ignoredProperties.includes(key) &&
+					doesQueryExistInItemOrAttributes((item as Record<string, unknown>)[key], query)
 			);
 		}
 	} else {
-		return item.toString().toLowerCase().includes(query);
+		return String(item).toLowerCase().includes(query);
 	}
 }
 
@@ -149,7 +150,6 @@ export function computeExactDuration(from: Date, to: Date = new Date()): string 
 
 	const days = remaining / DAY;
 	if (days >= 1) {
-		remaining = remaining % DAY;
 		display.push(`${Math.trunc(days)} day${days >= 2 ? 's' : ''}`);
 	}
 
