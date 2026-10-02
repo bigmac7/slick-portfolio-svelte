@@ -1,0 +1,1 @@
+import{A as e,O as t,V as n,f as r,t as i}from"./Cj77DstI.js";import"./Dw2l6KU-.js";var a=e(`<i></i>`);function o(e,o){let s=i(o,`icon`,3,void 0),c=i(o,`classes`,3,``);var l=a();n(()=>r(l,1,`${s()} ${c()}`)),t(e,l)}export{o as t};

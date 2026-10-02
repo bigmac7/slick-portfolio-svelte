@@ -1,0 +1,1 @@
+import{s as e,t}from"./9MEXuc81.js";import{$ as n,B as r,U as i,et as a,m as o}from"./Cj77DstI.js";function s(s,c){a(c,!0),o(`17m7hkp`,n=>{r(e=>{i.title=e??``},[()=>e(c.title,t)])}),n()}export{s as t};

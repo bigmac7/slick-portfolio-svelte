@@ -1,0 +1,1 @@
+var e=function(e){return e.GitHub=`github`,e.StackOverflow=`stackoverflow`,e.Twitter=`twitter`,e.Linkedin=`linkedin`,e.Email=`email`,e.Facebook=`facebook`,e.Youtube=`youtube`,e}({}),t=function(e){return e.FullTime=`Full-time`,e.PartTime=`Part-time`,e.SelfEmployed=`Self-employed`,e.Freelance=`Freelance`,e.Contract=`Contract`,e.Internship=`Internship`,e}({});export{e as n,t};

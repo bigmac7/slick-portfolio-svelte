@@ -1,0 +1,1 @@
+import{A as e,O as t,V as n,f as r,t as i,u as a}from"./Cj77DstI.js";var o=e(`<img/>`);function s(e,s){let c=i(s,`size`,3,50),l=i(s,`radius`,3,`15px`),u=i(s,`classes`,3,``);var d=o();n(()=>{r(d,1,`rounded-${l()} ${u()} aspect-square`),a(d,`src`,s.src),a(d,`alt`,s.alt),a(d,`height`,c()),a(d,`width`,c())}),t(e,d)}export{s as t};

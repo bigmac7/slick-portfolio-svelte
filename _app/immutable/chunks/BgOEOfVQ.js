@@ -1,0 +1,1 @@
+import{A as e,O as t}from"./Cj77DstI.js";import"./DfmukC3z.js";var n=e(`<div class="bg-[var(--border)] h-1px m-y-10px"></div>`);function r(e){var r=n();t(e,r)}export{r as t};

@@ -1,0 +1,1 @@
+import{A as e,E as t,K as n,O as r,V as i}from"./Cj77DstI.js";var a=e(`<h3 class="font-[var(--title-f)] text-1.25em"> </h3>`);function o(e,o){var s=a(),c=n(s,!0);i(()=>t(c,o.title)),r(e,s)}export{o as t};
