@@ -64,7 +64,7 @@ export const items = [
 		description: 'A data analysis library',
 		logo: Assets.Pandas,
 		name: 'Pandas',
-		category: 'pro-lang'
+		category: 'library'
 	}),
 	defineSkill({
 		slug: 'flask',
@@ -72,7 +72,7 @@ export const items = [
 		description: 'A web framework for Python',
 		logo: Assets.Flask,
 		name: 'Flask',
-		category: 'pro-lang'
+		category: 'framework'
 	}),
 	defineSkill({
 		slug: 'django',
@@ -80,7 +80,7 @@ export const items = [
 		description: 'A web framework for Python',
 		logo: Assets.Django,
 		name: 'Django',
-		category: 'pro-lang'
+		category: 'framework'
 	}),
 	defineSkill({
 		slug: 'docker',
