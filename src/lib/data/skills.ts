@@ -51,14 +51,6 @@ export const items = [
 		category: 'devops'
 	}),
 	defineSkill({
-		slug: 'rust',
-		color: 'orange',
-		description: 'A systems programming language',
-		logo: Assets.Rust,
-		name: 'Rust',
-		category: 'pro-lang'
-	}),
-	defineSkill({
 		slug: 'typescript',
 		color: 'yellow',
 		description: 'A superset of JavaScript',

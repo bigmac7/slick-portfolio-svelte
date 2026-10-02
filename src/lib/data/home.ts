@@ -16,4 +16,4 @@ export const links: Array<{ platform: Platform; link: string }> = [
 	}
 ];
 
-export const skills = getSkills('AWS', 'Docker', 'django', 'flask', 'python', 'rust', 'typescript');
+export const skills = getSkills('AWS', 'Docker', 'django', 'flask', 'python', 'typescript');
