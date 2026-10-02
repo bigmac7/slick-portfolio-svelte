@@ -89,6 +89,30 @@ export const items = [
 		logo: Assets.Docker,
 		name: 'Docker',
 		category: 'devops'
+	}),
+	defineSkill({
+		slug: 'kubernetes',
+		color: 'blue',
+		description: 'Container orchestration',
+		logo: Assets.Kubernetes,
+		name: 'Kubernetes',
+		category: 'devops'
+	}),
+	defineSkill({
+		slug: 'numpy',
+		color: 'blue',
+		description: 'Numerical computing for Python',
+		logo: Assets.Numpy,
+		name: 'NumPy',
+		category: 'library'
+	}),
+	defineSkill({
+		slug: 'svelte',
+		color: 'orange',
+		description: 'A compiler-based UI framework, used to build this site',
+		logo: Assets.Svelte,
+		name: 'Svelte',
+		category: 'framework'
 	})
 ] as const;
 
