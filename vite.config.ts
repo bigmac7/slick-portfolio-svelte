@@ -4,20 +4,20 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
 import UnoCSS from 'unocss/vite';
 
-const base = '/slick-portfolio-svelte';
-
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
 	plugins: [
 		UnoCSS(),
 		sveltekit({
 			preprocess: vitePreprocess(),
 			adapter: adapter({ fallback: '404.html' }),
 			paths: {
-				base: mode === 'production' ? base : ''
+				// Served from the domain root by default (Netlify). Set BASE_PATH when deploying under a
+				// sub-path, e.g. BASE_PATH=/slick-portfolio-svelte for GitHub Pages (see deploy.yml).
+				base: (process.env.BASE_PATH ?? '') as '' | `/${string}`
 			},
 			inspector: {
 				showToggleButton: 'always'
 			}
 		})
 	]
-}));
+});
