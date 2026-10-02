@@ -1,21 +1,30 @@
 <script lang="ts">
-	import type { BlogPost } from '$lib/types';
-	import { base } from '$app/paths';
+	import type { BlogPost } from '#lib/types.ts';
+	import { resolve } from '$app/paths';
 	import Card from '../Card/Card.svelte';
 	import CardTitle from '../Card/CardTitle.svelte';
 	import CardDivider from '../Card/CardDivider.svelte';
 	import Chip from '../Chip/Chip.svelte';
 	import UIcon from '../Icon/UIcon.svelte';
 
-	export let post: BlogPost;
-	/** Currently active tag filter, so the matching chip can be highlighted. */
-	export let activeTag = '';
+	interface Props {
+		post: BlogPost;
+		/** Currently active tag filter, so the matching chip can be highlighted. */
+		activeTag?: string;
+	}
+
+	let { post, activeTag = '' }: Props = $props();
 
 	const formatDate = (date: Date): string =>
 		date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 </script>
 
-<Card margin="0px 0px 20px 0px" tiltDegree={1.5} href={`${base}/blog/${post.slug}`} color="blue">
+<Card
+	margin="0px 0px 20px 0px"
+	tiltDegree={1.5}
+	href={resolve('/blog/[slug]', { slug: post.slug })}
+	color="blue"
+>
 	<div class="col gap-3 w-full">
 		<CardTitle title={post.title} />
 		<div class="row flex-wrap items-center gap-4 text-0.85em font-300 text-[var(--tertiary-text)]">
@@ -35,7 +44,7 @@
 		{#if post.tags.length > 0}
 			<div class="row flex-wrap items-center mt-2">
 				{#each post.tags as tag}
-					<Chip active={tag === activeTag} href={`${base}/blog?tag=${encodeURIComponent(tag)}`}>
+					<Chip active={tag === activeTag} href={resolve(`/blog?tag=${encodeURIComponent(tag)}`)}>
 						<span class="text-0.85em">#{tag}</span>
 					</Chip>
 				{/each}

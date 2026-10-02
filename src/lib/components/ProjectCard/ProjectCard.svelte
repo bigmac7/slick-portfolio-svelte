@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { computeExactDuration, countMonths, getMonthName } from '$lib/utils/helpers';
+	import { computeExactDuration, countMonths, getMonthName } from '#lib/utils/helpers.ts';
 	import Chip from '../Chip/Chip.svelte';
 	import Card from '../Card/Card.svelte';
 	import CardTitle from '../Card/CardTitle.svelte';
@@ -7,26 +7,34 @@
 	import CardDivider from '../Card/CardDivider.svelte';
 	import ChipIcon from '../Chip/ChipIcon.svelte';
 	import CardLogo from '../Card/CardLogo.svelte';
-	import type { Project } from '$lib/types';
-	import { getAssetURL } from '$lib/data/assets';
-	import { base } from '$app/paths';
+	import type { Project } from '#lib/types.ts';
+	import { getAssetURL } from '#lib/data/assets.ts';
+	import { resolve } from '$app/paths';
 	import UIcon from '../Icon/UIcon.svelte';
 
-	export let project: Project;
-	$: months = countMonths(project.period.from, project.period.to);
+	interface Props {
+		project: Project;
+	}
+
+	let { project }: Props = $props();
+	let months = $derived(countMonths(project.period.from, project.period.to));
 	// $: period = `${months} month${months > 1 ? 's' : ''}`;
 	// $: period = `${getTimeDiff(
 	// 	project.period.from,
 	// 	project.period.to ?? new Date(Date.now() + 1000 * 60 * 60 * 24)
 	// )}`;
-	$: period = computeExactDuration(project.period.from, project.period.to);
-	$: from = `${getMonthName(project.period.from.getMonth())} ${project.period.from.getFullYear()}`;
-	$: to = project.period.to
-		? `${getMonthName(project.period.to.getMonth())} ${project.period.to.getFullYear()}`
-		: 'now';
+	let period = $derived(computeExactDuration(project.period.from, project.period.to));
+	let from = $derived(
+		`${getMonthName(project.period.from.getMonth())} ${project.period.from.getFullYear()}`
+	);
+	let to = $derived(
+		project.period.to
+			? `${getMonthName(project.period.to.getMonth())} ${project.period.to.getFullYear()}`
+			: 'now'
+	);
 </script>
 
-<Card color={project.color} href={`${base}/projects/${project.slug}`}>
+<Card color={project.color} href={resolve('/projects/[slug]', { slug: project.slug })}>
 	<CardLogo alt={project.name} src={getAssetURL(project.logo)} size={40} radius={'0'} />
 	<div class="m-t-20px row justify-between items-center">
 		<CardTitle title={project.name} />
@@ -66,7 +74,7 @@
 			<ChipIcon
 				logo={getAssetURL(tech.logo)}
 				name={tech.name}
-				href={`${base}/skills/${tech.slug}`}
+				href={resolve('/skills/[slug]', { slug: tech.slug })}
 			/>
 		{/each}
 	</div>

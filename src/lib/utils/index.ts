@@ -1,4 +1,4 @@
-import { Platform } from '$lib/types';
+import { Platform } from '#lib/types.ts';
 
 export enum EmploymentType {
 	FullTime = 'Full-time',

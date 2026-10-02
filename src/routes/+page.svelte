@@ -1,14 +1,14 @@
 <script lang="ts">
-	import Carrousel from '$lib/components/Carrousel/Carrousel.svelte';
-	import Icon from '$lib/components/Icon/Icon.svelte';
-	import MainTitle from '$lib/components/MainTitle/MainTitle.svelte';
-	import { titleSuffix } from '@data/app';
-	import { links, description, lastName, name, title, skills } from '@data/home';
-	import { items as skillsItems } from '@data/skills';
-	import { useTitle } from '$lib/utils/helpers';
+	import Carrousel from '#lib/components/Carrousel/Carrousel.svelte';
+	import Icon from '#lib/components/Icon/Icon.svelte';
+	import MainTitle from '#lib/components/MainTitle/MainTitle.svelte';
+	import { titleSuffix } from '#lib/data/app.ts';
+	import { links, description, lastName, name, title, skills } from '#lib/data/home.ts';
+	import { items as skillsItems } from '#lib/data/skills.ts';
+	import { useTitle } from '#lib/utils/helpers.ts';
 	import { isBlank } from '@riadh-adrani/utils';
-	import { getPlatfromIcon } from '$lib/utils';
-	import { animateTyping } from '$lib/utils/typing_animation';
+	import { getPlatfromIcon } from '#lib/utils/index.ts';
+	import { animateTyping } from '#lib/utils/typing_animation.ts';
 
 	const isEmail = (email: string): boolean => {
 		const reg =
@@ -26,7 +26,7 @@
 >
 	<div class="md:flex-1 gap-10px">
 		<MainTitle classes="md:text-left ">{name} {lastName},</MainTitle>
-		<p class="text-[var(--tertiary-text)]  text-center md:text-left text-[1.2em] font-extralight">
+		<p class="text-[var(--tertiary-text)] text-center md:text-left text-[1.2em] font-extralight">
 			<span use:animateTyping={description}>
 				{description}
 			</span>

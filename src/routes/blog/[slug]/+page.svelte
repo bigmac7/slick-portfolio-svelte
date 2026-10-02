@@ -1,21 +1,25 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import { title } from '@data/blog';
-	import * as HOME from '@data/home';
-	import type { BlogPost } from '$lib/types';
+	import { resolve } from '$app/paths';
+	import { title } from '#lib/data/blog.ts';
+	import * as HOME from '#lib/data/home.ts';
+	import type { BlogPost } from '#lib/types.ts';
 
-	import MainTitle from '$lib/components/MainTitle/MainTitle.svelte';
-	import Markdown from '$lib/components/Markdown.svelte';
-	import TabTitle from '$lib/components/TabTitle.svelte';
-	import Chip from '$lib/components/Chip/Chip.svelte';
-	import Banner from '$lib/components/Banner/Banner.svelte';
-	import UIcon from '$lib/components/Icon/UIcon.svelte';
-	import CardDivider from '$lib/components/Card/CardDivider.svelte';
+	import MainTitle from '#lib/components/MainTitle/MainTitle.svelte';
+	import Markdown from '#lib/components/Markdown.svelte';
+	import TabTitle from '#lib/components/TabTitle.svelte';
+	import Chip from '#lib/components/Chip/Chip.svelte';
+	import Banner from '#lib/components/Banner/Banner.svelte';
+	import UIcon from '#lib/components/Icon/UIcon.svelte';
+	import CardDivider from '#lib/components/Card/CardDivider.svelte';
 
-	export let data: { post?: BlogPost };
+	interface Props {
+		data: { post?: BlogPost };
+	}
 
-	$: post = data.post;
-	$: computedTitle = post ? `${post.title} - ${title}` : title;
+	let { data }: Props = $props();
+
+	let post = $derived(data.post);
+	let computedTitle = $derived(post ? `${post.title} - ${title}` : title);
 
 	const formatDate = (date: Date): string =>
 		date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -28,7 +32,7 @@
 		<div class="p-5 col-center gap-3 m-y-auto text-[var(--accent-text)]">
 			<UIcon icon="i-carbon-document-unknown" classes="text-3.5em" />
 			<p class="font-300">Could not find this post...</p>
-			<a class="text-[var(--link)] decoration-none" href={`${base}/blog`}>← Back to the blog</a>
+			<a class="text-[var(--link)] decoration-none" href={resolve('/blog')}>← Back to the blog</a>
 		</div>
 	{:else}
 		<div class="flex flex-col items-center overflow-x-hidden">
@@ -64,7 +68,7 @@
 					{#if post.tags.length > 0}
 						<div class="row-center flex-wrap m-b-2">
 							{#each post.tags as tag}
-								<Chip href={`${base}/blog?tag=${encodeURIComponent(tag)}`}>
+								<Chip href={resolve(`/blog?tag=${encodeURIComponent(tag)}`)}>
 									<span class="text-[0.9em]">#{tag}</span>
 								</Chip>
 							{/each}
@@ -79,7 +83,7 @@
 				<div class="px-10px">
 					<a
 						class="text-[var(--link)] decoration-none row items-center gap-1"
-						href={`${base}/blog`}
+						href={resolve('/blog')}
 					>
 						<UIcon icon="i-carbon-arrow-left" />
 						<span>Back to all posts</span>

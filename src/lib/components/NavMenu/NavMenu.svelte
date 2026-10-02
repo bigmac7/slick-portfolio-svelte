@@ -1,15 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { theme, toggleTheme } from '$lib/stores/theme';
-	import { items } from '@data/navbar';
-	import * as HOME from '@data/home';
-
-	import { base } from '$app/paths';
+	import { resolve } from '$app/paths';
+	import { theme, toggleTheme } from '#lib/stores/theme.ts';
+	import { items } from '#lib/data/navbar.ts';
+	import * as HOME from '#lib/data/home.ts';
 	import UIcon from '../Icon/UIcon.svelte';
 
-	$: currentRoute = $page.url.pathname;
-
-	let expanded = false;
+	let expanded = $state(false);
 
 	const toggleExpanded = (v?: boolean) => {
 		if (typeof v === 'undefined') {
@@ -23,7 +19,7 @@
 <div class="nav-menu">
 	<nav class="container flex flex-row items-center text-sm">
 		<a
-			href={`${base}/`}
+			href={resolve('/')}
 			class="nav-menu-left decoration-none w-auto md:w-150px lg:w-auto row flex flex-row items-center cursor-pointer px-4 text-[var(--secondary-text)] self-stretch hover:bg-[color:var(--main-hover)]"
 		>
 			<UIcon icon="i-carbon-code" classes="text-2em" />
@@ -38,7 +34,7 @@
 		</div>
 		<div class="flex-row flex-1 self-center h-full justify-center hidden md:flex">
 			{#each items as item (item.title)}
-				<a href={`${base}${item.to}`} class="nav-menu-item !text-[var(--secondary-text)]">
+				<a href={resolve(item.to)} class="nav-menu-item !text-[var(--secondary-text)]">
 					<UIcon icon={item.icon} classes="text-1.3em" />
 					<span class="nav-menu-item-label">{item.title}</span>
 				</a>
@@ -49,14 +45,14 @@
 		>
 			<div class="row hidden md:flex">
 				<a
-					href={`${base}/search`}
+					href={resolve('/search')}
 					class="text-inherit col-center self-stretch px-2 hover:bg-[color:var(--main-hover)]"
 				>
 					<UIcon icon="i-carbon-search" />
 				</a>
 				<button
 					class="bg-transparent text-1em border-none cursor-pointer hover:bg-[color:var(--main-hover)] text-[var(--secondary-text)] px-2"
-					on:click={() => toggleTheme()}
+					onclick={() => toggleTheme()}
 				>
 					{#if $theme}
 						<UIcon icon="i-carbon-moon" />
@@ -66,13 +62,11 @@
 				</button>
 			</div>
 			<div class="col-center md:hidden h-full hover:bg-[var(--main-hover)] cursor-pointer">
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 				<div
 					class={`nav-bar-mobile-btn col-center ${expanded ? 'nav-bar-mobile-btn-expanded' : ''}`}
-					on:keydown
-					on:keyup
-					on:click={() => toggleExpanded()}
-				/>
+					onclick={() => toggleExpanded()}
+				></div>
 			</div>
 		</div>
 	</nav>
@@ -80,9 +74,9 @@
 		<div class="flex-col flex-1 self-center h-full justify-center m-t-7">
 			{#each items as item}
 				<a
-					href={`${base}${item.to}`}
+					href={resolve(item.to)}
 					class="nav-menu-item !text-[var(--secondary-text)] gap-5"
-					on:click={() => toggleExpanded(false)}
+					onclick={() => toggleExpanded(false)}
 				>
 					<UIcon icon={item.icon} classes="text-1.3em" />
 					<span class="">{item.title}</span>
@@ -91,16 +85,16 @@
 		</div>
 		<div class="col gap-2 m-t-7">
 			<a
-				href={`${base}/search`}
+				href={resolve('/search')}
 				class="text-inherit decoration-none px-6 py-3 gap-2 row hover:bg-[color:var(--main-hover)]"
-				on:click={() => toggleExpanded(false)}
+				onclick={() => toggleExpanded(false)}
 			>
 				<UIcon icon="i-carbon-search" />
 				<span>Search</span>
 			</a>
 			<button
 				class="bg-transparent text-1em border-none cursor-pointer px-6 py-3 gap-2 row hover:bg-[color:var(--main-hover)] text-[var(--secondary-text)] px-2"
-				on:click={() => toggleTheme()}
+				onclick={() => toggleTheme()}
 			>
 				{#if $theme}
 					<UIcon icon="i-carbon-moon" />

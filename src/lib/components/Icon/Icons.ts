@@ -1,4 +1,4 @@
-import { Icons } from '$lib/utils';
+import { Icons } from '#lib/utils/index.ts';
 
 export const viewBox = (icon: Icons) => {
 	if (icon === Icons.Youtube) return '0 0 461.001 461.001';

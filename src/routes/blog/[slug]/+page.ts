@@ -1,4 +1,4 @@
-import { items, getPostBySlug } from '@data/blog';
+import { items, getPostBySlug } from '#lib/data/blog.ts';
 
 // 'auto' rather than `true` so the build doesn't fail when there are zero
 // published posts (an empty `entries()`). Existing posts are still prerendered;

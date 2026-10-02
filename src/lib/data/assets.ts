@@ -1,8 +1,9 @@
-import type { Asset } from '$lib/types';
-import { theme } from '$lib/stores/theme';
-import { base } from '$app/paths';
+import type { AssetPath } from '$app/types';
+import type { Asset } from '#lib/types.ts';
+import { theme } from '#lib/stores/theme.ts';
+import { asset } from '$app/paths';
 
-const gh = (file: string) => `${base}/logos/${file}`;
+const gh = (file: string) => asset(`logos/${file}` as AssetPath);
 
 const a = (light: string, dark?: string): Asset =>
 	dark ? { dark: gh(dark), light: gh(light) } : gh(light);

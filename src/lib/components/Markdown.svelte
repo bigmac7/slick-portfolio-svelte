@@ -8,9 +8,13 @@
 	import 'prismjs/themes/prism-tomorrow.css';
 	import { onMount } from 'svelte';
 
-	let container: HTMLDivElement;
+	let container: HTMLDivElement | undefined = $state();
 
-	export let content: string;
+	interface Props {
+		content: string;
+	}
+
+	let { content }: Props = $props();
 
 	onMount(() => {
 		marked.use(gfmHeadingId());
@@ -18,7 +22,7 @@
 
 		const sanitizer = createSanitizer(window);
 
-		if (window) {
+		if (window && container) {
 			const parsed = marked.parse(content);
 
 			container.innerHTML = sanitizer.sanitize(parsed);
@@ -28,4 +32,4 @@
 	});
 </script>
 
-<div bind:this={container} class="markdown-container" />
+<div bind:this={container} class="markdown-container"></div>

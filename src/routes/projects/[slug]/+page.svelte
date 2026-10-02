@@ -1,32 +1,37 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import { getAssetURL } from '$lib/data/assets';
-	import { title } from '@data/projects';
+	import { resolve } from '$app/paths';
+	import { getAssetURL } from '#lib/data/assets.ts';
+	import { title } from '#lib/data/projects.ts';
 
-	import type { Project } from '$lib/types';
+	import type { Project } from '#lib/types.ts';
 
-	import CardLogo from '$lib/components/Card/CardLogo.svelte';
-	import MainTitle from '$lib/components/MainTitle/MainTitle.svelte';
-	import Markdown from '$lib/components/Markdown.svelte';
-	import TabTitle from '$lib/components/TabTitle.svelte';
-	import Chip from '$lib/components/Chip/Chip.svelte';
-	import Banner from '$lib/components/Banner/Banner.svelte';
-	import UIcon from '$lib/components/Icon/UIcon.svelte';
-	import CardDivider from '$lib/components/Card/CardDivider.svelte';
-	import Screenshot from '$lib/components/Screenshot/Screenshot.svelte';
+	import CardLogo from '#lib/components/Card/CardLogo.svelte';
+	import MainTitle from '#lib/components/MainTitle/MainTitle.svelte';
+	import Markdown from '#lib/components/Markdown.svelte';
+	import TabTitle from '#lib/components/TabTitle.svelte';
+	import Chip from '#lib/components/Chip/Chip.svelte';
+	import Banner from '#lib/components/Banner/Banner.svelte';
+	import UIcon from '#lib/components/Icon/UIcon.svelte';
+	import CardDivider from '#lib/components/Card/CardDivider.svelte';
+	import Screenshot from '#lib/components/Screenshot/Screenshot.svelte';
 
-	export let data: { project?: Project };
+	interface Props {
+		data: { project?: Project };
+	}
 
-	const screenshots = data.project?.screenshots ?? [];
+	let { data }: Props = $props();
 
-	let screenIndex: number | undefined = undefined;
+	let screenshots = $derived(data.project?.screenshots ?? []);
 
-	$: screenshot =
+	let screenIndex: number | undefined = $state(undefined);
+
+	let screenshot = $derived(
 		typeof screenIndex !== 'undefined' && screenshots[screenIndex]
 			? screenshots[screenIndex]
-			: undefined;
+			: undefined
+	);
 
-	$: computedTitle = data.project ? `${data.project.name} - ${title}` : title;
+	let computedTitle = $derived(data.project ? `${data.project.name} - ${title}` : title);
 </script>
 
 <TabTitle title={computedTitle} />
@@ -62,7 +67,7 @@
 						{#each data.project.skills as item}
 							<Chip
 								classes="inline-flex flex-row items-center justify-center"
-								href={`${base}/skills/${item.slug}`}
+								href={resolve('/skills/[slug]', { slug: item.slug })}
 							>
 								<CardLogo
 									src={getAssetURL(item.logo)}
@@ -93,22 +98,18 @@
 				</div>
 				{#if screenshots.length > 0}
 					<div
-						class="px-10px grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 m-t-10 "
+						class="px-10px grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 m-t-10"
 					>
 						{#each screenshots as item, index}
-							<!-- svelte-ignore a11y-no-static-element-interactions -->
+							<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 							<div
 								class="col-center gap-3 overflow-hidden w-100% h-100% rounded-10px"
-								on:click={() => (screenIndex = index)}
-								on:keydown
-								on:keypress
-								on:keyup
-								on:keyup
+								onclick={() => (screenIndex = index)}
 							>
 								<div
 									class="screenshot aspect-video bg-contain w-100% cursor-pointer"
 									style={`background-image: url(${item.src});`}
-								/>
+								></div>
 								<p class="text-[var(--tertiary-text)] font-300">{item.label}</p>
 							</div>
 						{/each}

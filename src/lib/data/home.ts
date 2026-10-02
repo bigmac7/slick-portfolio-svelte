@@ -1,4 +1,4 @@
-import { Platform } from '$lib/types';
+import { Platform } from '#lib/types.ts';
 import { getSkills } from './skills';
 
 export const title = 'Home';
@@ -16,12 +16,4 @@ export const links: Array<{ platform: Platform; link: string }> = [
 	}
 ];
 
-export const skills = getSkills(
-	'AWS',
-	'Docker',
-	'django',
-	'flask',
-	'python',
-	'rust',
-	'typescript'
-);
+export const skills = getSkills('AWS', 'Docker', 'django', 'flask', 'python', 'rust', 'typescript');

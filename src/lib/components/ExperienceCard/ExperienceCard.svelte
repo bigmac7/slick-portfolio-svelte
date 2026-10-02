@@ -1,47 +1,53 @@
 <script lang="ts">
-	import type { Experience } from '$lib/types';
-	import { computeExactDuration, getMonthName, getTimeDiff } from '$lib/utils/helpers';
+	import type { Experience } from '#lib/types.ts';
+	import { computeExactDuration, getMonthName, getTimeDiff } from '#lib/utils/helpers.ts';
 	import Card from '../Card/Card.svelte';
 	import CardLogo from '../Card/CardLogo.svelte';
 	import CardTitle from '../Card/CardTitle.svelte';
 	import ChipIcon from '../Chip/ChipIcon.svelte';
-	import { getAssetURL } from '$lib/data/assets';
-	import { base } from '$app/paths';
+	import { getAssetURL } from '#lib/data/assets.ts';
+	import { resolve } from '$app/paths';
 	import UIcon from '../Icon/UIcon.svelte';
 	import Chip from '../Chip/Chip.svelte';
 	import CardDivider from '../Card/CardDivider.svelte';
 
-	export let experience: Experience;
+	interface Props {
+		experience: Experience;
+	}
+
+	let { experience }: Props = $props();
 
 	// const months = getTimeDiff(experience.period.from, experience.period.to);
-	const exactDuration = computeExactDuration(experience.period.from, experience.period.to);
+	let exactDuration = $derived(computeExactDuration(experience.period.from, experience.period.to));
 
-	const from = `${getMonthName(
-		experience.period.from.getMonth()
-	)} ${experience.period.from.getFullYear()}`;
-	const to = experience.period.to
-		? `${getMonthName(experience.period.to.getMonth())} ${experience.period.to.getFullYear()}`
-		: 'Present';
+	let from = $derived(
+		`${getMonthName(experience.period.from.getMonth())} ${experience.period.from.getFullYear()}`
+	);
+	let to = $derived(
+		experience.period.to
+			? `${getMonthName(experience.period.to.getMonth())} ${experience.period.to.getFullYear()}`
+			: 'Present'
+	);
 
-	const period = `${from} - ${to}`;
+	let period = $derived(`${from} - ${to}`);
 
-	$: info = [
+	let info = $derived([
 		{ label: experience.company, icon: 'i-carbon-building' },
 		{ label: experience.location, icon: 'i-carbon-location' },
 		{ label: experience.contract, icon: 'i-carbon-hourglass' }
-	] as const;
+	] as const);
 </script>
 
 <Card
 	margin="0px 0px 20px 0px"
 	tiltDegree={2}
-	href={`${base}/experience/${experience.slug}`}
+	href={resolve('/experience/[slug]', { slug: experience.slug })}
 	color={experience.color}
 >
 	<div class="col md:flex-row items-start gap-5 md:gap-1">
 		<CardLogo src={getAssetURL(experience.logo)} alt={experience.company} size={55} />
 		<div class="col ml-0 md:ml-[20px] gap-3 w-full">
-			<div class="col ">
+			<div class="col">
 				<h3
 					class="flex text-[0.9em] flex-col items-start sm:flex-row sm:items-center justify-between sm:gap-5 md:flex-col md:items-start md:gap-0 lg:flex-row lg:items-center"
 				>
@@ -74,7 +80,7 @@
 					<ChipIcon
 						logo={getAssetURL(skill.logo)}
 						name={skill.name}
-						href={`${base}/skills/${skill.slug}`}
+						href={resolve('/skills/[slug]', { slug: skill.slug })}
 					/>
 				{/each}
 			</div>

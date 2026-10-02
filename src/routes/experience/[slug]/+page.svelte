@@ -1,23 +1,27 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import { getAssetURL } from '$lib/data/assets';
-	import { title } from '@data/experience';
-	import { getTimeDiff } from '$lib/utils';
+	import { resolve } from '$app/paths';
+	import { getAssetURL } from '#lib/data/assets.ts';
+	import { title } from '#lib/data/experience.ts';
+	import { getTimeDiff } from '#lib/utils/index.ts';
 
-	import type { Experience } from '$lib/types';
+	import type { Experience } from '#lib/types.ts';
 
-	import CardLogo from '$lib/components/Card/CardLogo.svelte';
-	import MainTitle from '$lib/components/MainTitle/MainTitle.svelte';
-	import Markdown from '$lib/components/Markdown.svelte';
-	import TabTitle from '$lib/components/TabTitle.svelte';
-	import Chip from '$lib/components/Chip/Chip.svelte';
-	import Banner from '$lib/components/Banner/Banner.svelte';
-	import UIcon from '$lib/components/Icon/UIcon.svelte';
-	import CardDivider from '$lib/components/Card/CardDivider.svelte';
+	import CardLogo from '#lib/components/Card/CardLogo.svelte';
+	import MainTitle from '#lib/components/MainTitle/MainTitle.svelte';
+	import Markdown from '#lib/components/Markdown.svelte';
+	import TabTitle from '#lib/components/TabTitle.svelte';
+	import Chip from '#lib/components/Chip/Chip.svelte';
+	import Banner from '#lib/components/Banner/Banner.svelte';
+	import UIcon from '#lib/components/Icon/UIcon.svelte';
+	import CardDivider from '#lib/components/Card/CardDivider.svelte';
 
-	export let data: { experience?: Experience };
+	interface Props {
+		data: { experience?: Experience };
+	}
 
-	$: computedTitle = data.experience ? `${data.experience.name} - ${title}` : title;
+	let { data }: Props = $props();
+
+	let computedTitle = $derived(data.experience ? `${data.experience.name} - ${title}` : title);
 </script>
 
 <TabTitle title={computedTitle} />
@@ -58,7 +62,7 @@
 						{#each data.experience.skills as item}
 							<Chip
 								classes="inline-flex flex-row items-center justify-center"
-								href={`${base}/skills/${item.slug}`}
+								href={resolve('/skills/[slug]', { slug: item.slug })}
 							>
 								<CardLogo
 									src={getAssetURL(item.logo)}
